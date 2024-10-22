@@ -1,0 +1,483 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel App</title>
+    <style>
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: white;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .logo h1 {
+            color: #007BFF;
+            font-size: 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: url('https://static.vecteezy.com/system/resources/thumbnails/030/028/507/small_2x/aerial-view-forest-moody-fog-peaceful-landscape-freedom-scene-beautiful-nature-wallpaper-photo.jpg') no-repeat center center/cover;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .search-bar input {
+            padding: 10px;
+            border-radius: 30px;
+            border: 1px solid #ccc;
+            width: 300px;
+        }
+
+        .search-bar button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 30px;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Main Container */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Destination Card */
+        .destination-card {
+            background-color: rgba(255, 255, 255, 0.7); /* Transparent background */
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .destination-card img {
+            width: 400px; /* Increased image size */
+            height: 400px;
+            border-radius: 10px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .destination-details {
+            flex: 1;
+            margin-left: 20px;
+        }
+
+        .destination-details h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .destination-details p {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .hotel-info {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        /* Save (Heart) and Delete (Trash) Icons */
+        .icon-btn {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .icon-btn.heart {
+            color: #888; /* Default color for heart */
+            transition: color 0.3s ease;
+        }
+
+        .icon-btn.heart.active {
+            color: red; /* Red color when saved */
+        }
+
+        .icon-btn.trash {
+            color: #888; /* Default color for trash */
+            transition: color 0.3s ease;
+        }
+
+        .icon-btn.trash:hover {
+            color: #dc3545; /* Red on hover */
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-content img {
+            width: 80%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .modal-content .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Star Rating */
+        .stars {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .stars i {
+            font-size: 30px;
+            color: gray;
+            cursor: pointer;
+        }
+
+        .stars i.active {
+            color: gold;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .destination-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .destination-details {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+
+            .search-bar input {
+                width: 100%;
+            }
+            .icon-btn.heart.active {
+    color: red; /* Red color when saved */
+}
+
+
+            .search-bar {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .search-bar button {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+        /* Save (Heart) and Delete (Trash) Icons */
+.icon-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+}
+
+.icon-btn.heart {
+    color: #888; /* Default color for heart */
+    transition: color 0.3s ease;
+}
+
+.icon-btn.heart.active {
+    color: red; /* Red color when saved */
+}
+
+.icon-btn.trash {
+    color: #888; /* Default color for trash */
+    transition: color 0.3s ease;
+}
+
+.icon-btn.trash:hover {
+    color: #dc3545; /* Red on hover */
+}
+
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <h1>Musafir.com</h1>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        Explore the Land of the Rising Sun
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search destinations...">
+        <button onclick="searchDestinations()">Search</button>
+    </div>
+
+    <!-- Main Container for Destinations -->
+    <div class="main-container" id="destinationsContainer">
+        <!-- Dynamic Content for destinations will go here -->
+    </div>
+
+    <!-- Itinerary Section -->
+    <div class="itinerary-container">
+        <h2>My Itinerary</h2>
+        <div id="itineraryContainer"></div>
+    </div>
+
+    <!-- Modal for Enlarged Image -->
+    <div id="imageModal" class="modal">
+      <div class="modal-content">
+        <button class="close-btn" onclick="closeModal()">✖</button>
+        <img id="modalImage" src="" alt="Enlarged Destination" style="width: 600px; height: 600px;">
+        <div id="modalDescription"></div>
+        <div class="stars">
+          <i class="star" onclick="rateStar(1)">&#9733;</i>
+          <i class="star" onclick="rateStar(2)">&#9733;</i>
+          <i class="star" onclick="rateStar(3)">&#9733;</i>
+          <i class="star" onclick="rateStar(4)">&#9733;</i>
+          <i class="star" onclick="rateStar(5)">&#9733;</i>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <script>
+        // Destination Data (For Example Purpose)
+        // Destination Data (For Example Purpose)
+const destinations = [
+    {
+        id: 1, 
+        name: 'Paris', 
+        description: 'Paris, often referred to as the "City of Lights," is known for its art, fashion, and culture. It’s a dream destination for lovers of history and art with iconic landmarks such as the Eiffel Tower, the Louvre Museum, and charming streets filled with cafes and boutiques.', 
+        activities: ['Eiffel Tower', 'Louvre Museum', 'Notre-Dame Cathedral'],
+        hotels: ['Hotel Le Meurice - Rue de Rivoli', 'Four Seasons Hotel George V - Avenue George V'],
+        cost: '$1500', 
+        duration: '5 days', 
+        img: 'https://m.media-amazon.com/images/I/71oFVzj8piL._AC_UF894,1000_QL80_.jpg' 
+    },
+    {
+        
+        id: 2, 
+        name: 'New York', 
+        description: 'New York, also called "The Big Apple," is famous for its skyscrapers, museums, theaters, and endless activities. From Central Park to the Statue of Liberty, there’s no shortage of things to see and do in this fast-paced city.', 
+        activities: ['Central Park', 'Times Square', 'Statue of Liberty'],
+        hotels: ['The Plaza - 5th Avenue', 'The Ritz-Carlton - Central Park South'],
+        cost: '$1800', 
+        duration: '7 days', 
+        img: 'https://i.natgeofe.com/k/5b396b5e-59e7-43a6-9448-708125549aa1/new-york-statue-of-liberty.jpg' 
+
+    },
+    {
+       id: 3, 
+        name: 'Tokyo', 
+        description: 'Tokyo, the bustling capital of Japan, is known for its blend of traditional and futuristic attractions. From the serene Meiji Shrine to the ultra-modern Shibuya Crossing, Tokyo offers a rich experience of Japan’s history and future.', 
+        activities: ['Shibuya Crossing', 'Tokyo Tower', 'Meiji Shrine'],
+        hotels: ['Park Hyatt Tokyo - Shinjuku', 'The Ritz-Carlton - Roppongi'],
+        cost: '$2200', 
+        duration: '6 days', 
+        img: 'https://t3.ftcdn.net/jpg/02/65/23/70/360_F_265237090_Muthvb72m2POYFjyx7F5UCQLh9JdBtKN.jpg' 
+
+    }
+];
+
+let itinerary = JSON.parse(localStorage.getItem('itinerary')) || [];
+
+// Function to render destinations
+function renderDestinations() {
+    const container = document.getElementById('destinationsContainer');
+    container.innerHTML = '';
+
+    destinations.forEach(dest => {
+        const isSaved = itinerary.some(itinDest => itinDest.id === dest.id);
+        container.innerHTML += `
+            <div class="destination-card">
+                <img src="${dest.img}" alt="${dest.name}" onclick="showModal('${dest.img}', '${dest.description}', '${dest.hotels.join(', ')}')">
+                <div class="destination-details">
+                    <h3>${dest.name}</h3>
+                    <p>${dest.description}</p>
+                    <p>Cost: ${dest.cost}</p>
+                    <p>Duration: ${dest.duration}</p>
+                    <p class="hotel-info">Hotels: ${dest.hotels.join(', ')}</p>
+                    <p class="hotel-info">Places: ${dest.activities.join(', ')}</p>
+                </div>
+                <button class="icon-btn heart ${isSaved ? 'active' : ''}" onclick="saveToItinerary(${dest.id}, this)">❤️</button>
+                <button class="icon-btn" onclick="deleteFromItinerary(${dest.id})">❌</button>
+            </div>
+        `;
+    });
+}
+
+// Function to show modal with enlarged image and description
+function showModal(img, description, hotels) {
+    document.getElementById('imageModal').style.display = 'flex';
+    document.getElementById('modalImage').src = img;
+    document.getElementById('modalDescription').innerHTML = `
+        <p>${description}</p>
+        <p>Hotels: ${hotels}</p>
+    `;
+}
+
+// Close Modal
+function closeModal() {
+    document.getElementById('imageModal').style.display = 'none';
+}
+
+// Function to save a destination to itinerary
+function saveToItinerary(id, heartBtn) {
+    const selectedDestination = destinations.find(dest => dest.id === id);
+    const isAlreadySaved = itinerary.some(dest => dest.id === id);
+    
+    if (!isAlreadySaved) {
+        itinerary.push(selectedDestination);
+        heartBtn.classList.add('active'); // Change heart color to active
+        localStorage.setItem('itinerary', JSON.stringify(itinerary));
+        renderItinerary();
+    } else {
+        alert("This destination is already added to your itinerary.");
+    }
+}
+
+// Function to delete a destination from itinerary
+function deleteFromItinerary(id) {
+    itinerary = itinerary.filter(dest => dest.id !== id);
+    const heartBtn = document.querySelector('.icon-btn.heart[onclick*="${id}"]');
+    if (heartBtn) heartBtn.classList.remove('active'); // Remove active class from heart
+    localStorage.setItem('itinerary', JSON.stringify(itinerary));
+    renderItinerary();
+}
+
+// Function to render the itinerary
+function renderItinerary() {
+    const container = document.getElementById('itineraryContainer');
+    container.innerHTML = '';
+
+    if (itinerary.length === 0) {
+        container.innerHTML = '<p>No destinations in your itinerary yet.</p>';
+    }
+
+    itinerary.forEach(dest => {
+        container.innerHTML += `
+            <div class="itinerary-card">
+                <h4>${dest.name}</h4>
+                <p>Activities: ${dest.activities.join(', ')}</p>
+                <p>Cost: ${dest.cost}</p>
+                <p>Duration: ${dest.duration}</p>
+            </div>
+        `;
+    });
+}
+
+// Star rating functionality
+function rateStar(starNum) {
+    const stars = document.querySelectorAll('.star');
+    stars.forEach((star, index) => {
+        if (index < starNum) {
+            star.classList.add('active');
+        } else {
+            star.classList.remove('active');
+        }
+    });
+}
+
+// Search functionality
+function searchDestinations() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const filteredDestinations = destinations.filter(dest => dest.name.toLowerCase().includes(query));
+
+    const container = document.getElementById('destinationsContainer');
+    container.innerHTML = '';
+
+    if (filteredDestinations.length > 0) {
+        filteredDestinations.forEach(dest => {
+            container.innerHTML += `
+                <div class="destination-card">
+                    <img src="${dest.img}" alt="${dest.name}" onclick="showModal('${dest.img}', '${dest.description}', '${dest.hotels.join(', ')}')">
+                    <div class="destination-details">
+                        <h3>${dest.name}</h3>
+                        <p>${dest.description}</p>
+                        <p>Cost: ${dest.cost}</p>
+                        <p>Duration: ${dest.duration}</p>
+                        <p class="hotel-info">Hotels: ${dest.hotels.join(', ')}</p>
+                        <p class="hotel-info">Places: ${dest.activities.join(', ')}</p>
+                    </div>
+                    <button class="icon-btn heart" onclick="saveToItinerary(${dest.id}, this)">❤️</button>
+                    <button class="icon-btn" onclick="deleteFromItinerary(${dest.id})">❌</button>
+                </div>
+            `;
+        });
+    } else {
+        container.innerHTML = '<p>No destinations found for your search.</p>';
+    }
+}
+
+// Initialize
+renderDestinations();
+renderItinerary();
+    </script>
+</body>
+
+</html>
